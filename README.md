@@ -1,34 +1,36 @@
-# YouTube Playlist Stats Analyzer 📊
+# YouTube Playlist Analyzer
 
-A Next.js web application that analyzes YouTube playlist statistics including total duration, views, likes, and comments.
+A web application that analyzes YouTube playlists and provides detailed statistics including total duration, view counts, and other metrics.
 
 ## Features
 
-- 🎯 Analyze any public YouTube playlist
-- 📊 Get comprehensive statistics (videos, duration, views, likes, comments)
-- 🎨 Beautiful, responsive UI with dark theme
-- 🔒 Secure API key handling
-- ⚡ Fast data fetching with pagination support
+- 🎵 Analyze any public YouTube playlist
+- ⏱️ Calculate total watch time
+- 📊 View statistics for each video
+- 📈 See playlist metrics (views, likes, comments)
+- 🎨 Clean, responsive UI built with Next.js 13
+- 🚀 Fast server-side processing
 
-## Prerequisites
+## Tech Stack
 
-- Node.js 18+ installed
-- YouTube Data API v3 key
+- Next.js 13 (App Router)
+- TypeScript
+- Tailwind CSS
+- YouTube Data API v3
+- Vercel (Deployment)
 
 ## Getting Started
 
-### 1. Get YouTube API Key
+### Prerequisites
 
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the YouTube Data API v3
-4. Create credentials (API Key)
-5. Copy your API key
+- Node.js 16.8 or later
+- YouTube Data API key ([Get one here](https://console.cloud.google.com/apis/library/youtube.googleapis.com))
 
-### 2. Setup Project
+### Installation
 
-1. Extract the zip file and navigate to the project directory:
+1. Clone the repository:
 ```bash
+git clone https://github.com/yourusername/youtube-playlist-stats.git
 cd youtube-playlist-stats
 ```
 
@@ -37,87 +39,65 @@ cd youtube-playlist-stats
 npm install
 ```
 
-3. Create environment file:
-```bash
-cp .env.local.example .env.local
+3. Create a `.env.local` file in the root directory:
+```env
+YOUTUBE_API_KEY=your_youtube_api_key_here
 ```
 
-4. Add your YouTube API key to `.env.local`:
-```
-YOUTUBE_API_KEY="YOUR_ACTUAL_API_KEY_HERE"
-```
-
-### 3. Run the Application
-
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Screenshots
+
+### Home Page
+![Home Page Screenshot](public/homepage.png)
+*Landing page with playlist URL input*
+
+### Analysis Results
+![Analysis Results Screenshot](public/analysis.png)
+*Detailed playlist statistics and metrics*
 
 ## Usage
 
-1. Copy a public YouTube playlist URL (e.g., `https://www.youtube.com/playlist?list=PLxxxxxx`)
-2. Paste it into the input field
-3. Click "Analyze" to get comprehensive statistics
+1. Copy a YouTube playlist URL (must be public)
+2. Paste the URL into the input field
+3. Click "Analyze" to see detailed statistics
 
-## Project Structure
+## API Rate Limits
 
-```
-youtube-playlist-stats/
-├── app/
-│   ├── api/
-│   │   └── playlist/
-│   │       └── route.ts          # API endpoint for playlist analysis
-│   ├── globals.css               # Global styles with Tailwind
-│   ├── layout.tsx                # Root layout component
-│   └── page.tsx                  # Main page component
-├── .env.local.example            # Environment variables template
-├── .gitignore
-├── next.config.js
-├── package.json
-├── postcss.config.js
-├── tailwind.config.js
-├── tsconfig.json
-└── README.md
-```
+The application includes built-in rate limiting to prevent API quota exhaustion. Each IP address is limited to one request per second.
 
-## Technologies Used
+## Deployment
 
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **YouTube Data API v3** - Fetching playlist data
-- **Google APIs Node.js Client** - API integration
+The easiest way to deploy this application is using Vercel:
 
-## Build for Production
-
-```bash
-npm run build
-npm run start
-```
-
-## Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `YOUTUBE_API_KEY` | Your YouTube Data API v3 key | Yes |
-
-## API Usage Limits
-
-The YouTube Data API has quota limits. Each request consumes quota units:
-- Playlist items list: 1 unit per request
-- Videos list: 1 unit per request
-
-For large playlists, the app handles pagination automatically.
+1. Push your code to GitHub
+2. Import your repository in Vercel
+3. Add your `YOUTUBE_API_KEY` in the Environment Variables section
+4. Deploy
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- YouTube Data API
+- Next.js team
+- Vercel for hosting
+
+## Support
+
+If you encounter any issues or have questions, please open an issue in the GitHub repository.

@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { google, youtube_v3 } from "googleapis";
 import { headers } from "next/headers";
 
+// Validate environment variables at startup
+if (!process.env.YOUTUBE_API_KEY) {
+  throw new Error("YOUTUBE_API_KEY is required in environment variables");
+}
+
 const youtube = google.youtube({
   version: "v3",
   auth: process.env.YOUTUBE_API_KEY,

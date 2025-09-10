@@ -75,14 +75,14 @@ export async function POST(request: Request) {
     }
 
     // --- Step 1: Get Playlist Metadata (Title, Channel) ---
-    const playlistMetaResponse = await youtube.playlists.list({
+    const { data: playlistMeta }: { data: youtube_v3.Schema$PlaylistListResponse } = await youtube.playlists.list({
       part: ["snippet"],
       id: [playlistId],
     });
 
     if (
-      !playlistMetaResponse.data.items ||
-      playlistMetaResponse.data.items.length === 0
+      !playlistMeta.items ||
+      playlistMeta.items.length === 0
     ) {
       return NextResponse.json(
         { error: "Playlist not found." },
@@ -91,9 +91,9 @@ export async function POST(request: Request) {
     }
 
     const playlistTitle =
-      playlistMetaResponse.data.items[0].snippet?.title || "Untitled Playlist";
+      playlistMeta.items[0].snippet?.title || "Untitled Playlist";
     const channelTitle =
-      playlistMetaResponse.data.items[0].snippet?.channelTitle ||
+      playlistMeta.items[0].snippet?.channelTitle ||
       "Unknown Channel";
 
     // --- Step 2: Fetch all video IDs from the playlist (handling pagination) ---
@@ -101,20 +101,20 @@ export async function POST(request: Request) {
     let nextPageToken: string | undefined | null = null;
 
     do {
-      const playlistResponse = await youtube.playlistItems.list({
+      const { data }: { data: youtube_v3.Schema$PlaylistItemListResponse } = await youtube.playlistItems.list({
         part: ["contentDetails"],
         playlistId: playlistId,
         maxResults: 50,
         pageToken: nextPageToken || undefined,
       });
 
-      const ids = playlistResponse.data.items
+      const ids = data.items
         ?.map((item) => item.contentDetails?.videoId)
         .filter((id): id is string => !!id);
 
       if (ids) videoIds.push(...ids);
 
-      nextPageToken = playlistResponse.data.nextPageToken;
+      nextPageToken = data.nextPageToken;
     } while (nextPageToken);
 
     if (videoIds.length === 0) {
@@ -143,12 +143,12 @@ export async function POST(request: Request) {
 
     for (let i = 0; i < videoIds.length; i += 50) {
       const batch = videoIds.slice(i, i + 50);
-      const videoDetailsResponse = await youtube.videos.list({
+      const { data: videoDetails }: { data: youtube_v3.Schema$VideoListResponse } = await youtube.videos.list({
         part: ["contentDetails", "statistics"],
         id: batch,
       });
 
-      const videos = videoDetailsResponse.data.items || [];
+      const videos = videoDetails.items || [];
       videos.forEach((video) => {
         totalDurationSeconds += parseDuration(
           video.contentDetails?.duration || "PT0S"
